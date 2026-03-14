@@ -17,8 +17,36 @@ vi.mock('../../src/llm/client.js', () => ({
   }
 }))
 
-import { generateSql } from '../../src/llm/sql-generator.js'
+import { generateSql, extractSql } from '../../src/llm/sql-generator.js'
 import { llmClient } from '../../src/llm/client.js'
+
+describe('extractSql', () => {
+  it('extracts from ```sql fence', () => {
+    expect(extractSql('```sql\nSELECT 1\n```')).toBe('SELECT 1')
+  })
+
+  it('handles Qwen3 thinking mode output (reasoning before SQL)', () => {
+    const thinkingOutput = `Let me think about this query...
+The user wants sales data.
+
+\`\`\`sql
+SELECT SUM(ABS(a.amount)) FROM trn_voucher v JOIN trn_accounting a ON a.guid = v.guid
+\`\`\``
+    const result = extractSql(thinkingOutput)
+    expect(result).toContain('SELECT')
+    expect(result).not.toContain('Let me think')
+    expect(result).not.toContain('```')
+  })
+
+  it('extracts SELECT when no code fence present', () => {
+    const output = 'Here is the query:\nSELECT * FROM trn_voucher LIMIT 10'
+    expect(extractSql(output)).toBe('SELECT * FROM trn_voucher LIMIT 10')
+  })
+
+  it('returns plain SQL unchanged', () => {
+    expect(extractSql('SELECT 1 AS val')).toBe('SELECT 1 AS val')
+  })
+})
 
 describe('generateSql', () => {
   it('returns a SQL string from the LLM response', async () => {

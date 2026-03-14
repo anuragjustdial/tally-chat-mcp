@@ -41,10 +41,12 @@ export async function buildSystemPrompt(): Promise<string> {
 
   const dbDialect = config.DB_TYPE === 'mysql' ? 'MySQL' : 'PostgreSQL'
 
-  cachedPrompt = `You are a SQL expert for a Tally Prime accounting database (${dbDialect}).
+  cachedPrompt = `/no_think
+You are a SQL expert for a Tally Prime accounting database (${dbDialect}).
 
 ## Your job
 Convert the user's natural language question into a single valid ${dbDialect} SELECT query.
+RESPOND WITH ONLY THE SQL QUERY — no explanation, no reasoning, no markdown.
 
 ## Rules
 - Return ONLY the SQL query. No explanations, no markdown, no code blocks.
