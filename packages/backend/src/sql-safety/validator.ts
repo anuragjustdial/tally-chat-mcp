@@ -1,4 +1,5 @@
-import { Parser } from 'node-sql-parser'
+import NodeSqlParser from 'node-sql-parser'
+const { Parser } = NodeSqlParser
 
 export class SqlValidationError extends Error {
   constructor(msg: string) {
