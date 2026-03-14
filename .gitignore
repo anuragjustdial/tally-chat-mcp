@@ -1,0 +1,16 @@
+node_modules/
+__pycache__/
+*.pyc
+.env
+.env.local
+.env.*.local
+.DS_Store
+dist/
+build/
+*.log
+.venv/
+venv/
+archive/
+
+# Claude Code — remove # below to exclude from git
+.claude/
