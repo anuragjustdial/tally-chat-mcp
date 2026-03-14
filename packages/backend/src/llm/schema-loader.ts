@@ -66,6 +66,12 @@ RESPOND WITH ONLY THE SQL QUERY — no explanation, no reasoning, no markdown.
 - trn_bill.ledger → mst_ledger.name
 - mst_ledger.parent → mst_group.name
 
+## CRITICAL: date column is ONLY on trn_voucher — never on trn_accounting or trn_inventory
+- To filter by date: always use trn_voucher.date (or alias tv.date)
+- trn_accounting has NO date column — do NOT write ta.date or a.date
+- trn_inventory has NO date column — do NOT write ti.date or i.date
+- Always JOIN to trn_voucher to filter by date
+
 ## Amount conventions in trn_accounting
 - Sales revenue: amount < 0 (credit side)
 - Purchase cost: amount > 0 (debit side)

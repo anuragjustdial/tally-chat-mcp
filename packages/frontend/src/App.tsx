@@ -25,14 +25,20 @@ const App: Component = () => {
     bottomRef?.scrollIntoView({ behavior: 'smooth' })
 
   const handleSend = async (text: string) => {
+    // Capture history BEFORE adding the current message to avoid duplicates.
+    // Also drop any leading assistant messages (e.g. the welcome message) —
+    // Qwen3's jinja template requires history to start with a user message.
+    const rawHistory = messages().slice(-10)
+    const firstUserIdx = rawHistory.findIndex((m) => m.role === 'user')
+    const history = firstUserIdx >= 0 ? rawHistory.slice(firstUserIdx) : []
+
     const userMsg: Message = { role: 'user', content: text }
     setMessages((prev) => [...prev, userMsg])
     setLoading(true)
     setTimeout(scrollToBottom, 50)
 
     try {
-      // Send last 10 messages as history for multi-turn context
-      const response = await sendMessage(text, messages().slice(-10))
+      const response = await sendMessage(text, history)
       setMessages((prev) => [
         ...prev,
         { role: 'assistant', content: response.answer },
