@@ -1,0 +1,16 @@
+{
+  "status": "success",
+  "question": "total sales this month",
+  "sql": "SELECT SUM(trn_inventory.amount) AS total_sales\nFROM trn_inventory\nJOIN trn_voucher ON (trn_voucher.guid = trn_inventory.guid)\nWHERE trn_voucher.voucher_type IN ('Sales', 'Credit Note')\n  AND trn_voucher.date >= DATE_TRUNC('month', CURRENT_DATE)\n  AND trn_voucher.date < DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month'\n  AND (trn_voucher.is_order_voucher = 0)\n  AND (trn_voucher.is_inventory_voucher = 0);",
+  "columns": [
+      "total_sales"
+  ],
+  "rows": [
+      [
+          28200.0
+      ]
+  ],
+  "rows_returned": 1,
+  "message": null,
+  "attempts": 1
+}

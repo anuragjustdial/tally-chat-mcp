@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#135bec",
+            "background-light": "#f6f6f8",
+            "background-dark": "#101622",
+          },
+          fontFamily: {
+            "display": ["Inter"]
+          },
+          borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" },
+        },
+      },
+    }
+  </script>
+  <title>Modern Chat View</title>
+  <style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display antialiased text-slate-900 dark:text-slate-100">
+  <div
+    class="relative flex h-screen w-full flex-col overflow-hidden max-w-2xl mx-auto border-x border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+    <!-- Header -->
+    <header
+      class="flex items-center justify-between px-4 py-3 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 sticky top-0 z-10">
+      <div class="flex items-center gap-3">
+        <div class="relative">
+          <div class="size-10 rounded-full bg-cover bg-center" data-alt="Profile picture of a smiling young man"
+            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAbxLt2Mw43iuSd4KVw2TXEB4xuBrOAjnvgIxeD0zaYXtWebGRQIIicFjLJ6U5Z0fN3f5OeayoRINnDu6U27kl3HlsKRnGEXryo70OjzjlYwJyj9rI67ZvdgSeAFr1jKXI4cnc6pAFTB1OeCNIwWrjl873I3SlqfUtG8SwBmLLClQYmLmXagP47Pmj532wPz5_gpLqeZ3P3XvxS_z8KFgOaN0WTkmpAbJYp-SdTPk1ARv2QeVSUoAHeCEP0PWg7IIQrd8qNKH2eS4Bn")'>
+          </div>
+          <div
+            class="absolute bottom-0 right-0 size-3 bg-green-500 border-2 border-white dark:border-slate-950 rounded-full">
+          </div>
+        </div>
+        <div>
+          <h2 class="text-base font-bold leading-tight tracking-tight">Alex Johnson</h2>
+          <p class="text-xs font-medium text-green-500">Online</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-1">
+        <button class="p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full">
+          <span class="material-symbols-outlined">more_vert</span>
+        </button>
+      </div>
+    </header>
+    <!-- Message History -->
+    <main class="flex-1 overflow-y-auto p-4 space-y-6">
+      <div class="flex justify-center">
+        <span
+          class="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-600 bg-slate-100 dark:bg-slate-900 px-2 py-1 rounded">Today</span>
+      </div>
+      <!-- Received Message -->
+      <div class="flex items-end gap-2 max-w-[85%]">
+        <div class="size-8 shrink-0 rounded-full bg-cover bg-center mb-1"
+          data-alt="Small profile avatar of Alex Johnson"
+          style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD2398QPzooB0DJf8D6y02OIWeLTpUwnpwDy74MKwWDDiCTIm37G7vly8RXaF5_XCWu0wm54KVi2LW3FPQA6mGBNytfGMkpkSGHlZ-2cbKR8nVH5P3bx2Oa00H8jW6AzbLkLmx7jIg5s7oJQUEEqktezQKlWsWmKq_12gGGtZ6q1fE5RjGKpmDCXnlSsBebuQUnTnYWUbzLlO7Hj6bdR2ueRG4U2duggaMzwVh9fWJgJLbr5aMmuV-QRNf1vykxZd7WwA4WFn007vZB")'>
+        </div>
+        <div class="flex flex-col gap-1">
+          <div
+            class="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 px-4 py-2.5 rounded-2xl rounded-bl-none shadow-sm">
+            <p class="text-sm leading-relaxed">Hey! Did you see the new design specs for the dashboard? I just uploaded
+              them to the shared drive.</p>
+          </div>
+          <span class="text-[10px] text-slate-400 ml-1">10:24 AM</span>
+        </div>
+      </div>
+      <!-- Sent Message -->
+      <div class="flex flex-col items-end gap-1 ml-auto max-w-[85%]">
+        <div class="bg-primary text-white px-4 py-2.5 rounded-2xl rounded-br-none shadow-sm shadow-primary/20">
+          <p class="text-sm leading-relaxed">Not yet, just getting online now. Send them over here as well if you can?
+          </p>
+        </div>
+        <div class="flex items-center gap-1 mr-1">
+          <span class="text-[10px] text-slate-400">10:25 AM</span>
+          <span class="material-symbols-outlined text-primary text-[14px]">done_all</span>
+        </div>
+      </div>
+      <!-- Received Message with File -->
+      <div class="flex items-end gap-2 max-w-[85%]">
+        <div class="size-8 shrink-0 rounded-full bg-cover bg-center mb-1"
+          data-alt="Small profile avatar of Alex Johnson"
+          style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAp0NKcb38OpZ6Ijh80nyqN_l-qFfq1ClUa3QkyIh8LDkRfP6RuxFFQdOJwRlzwUDSGrp89ksVxYYaeg52mbdOuBal6qdSwZ_5RHqI2-ycwCzl8u_JHvtMCsvy_1bLEp55H8zHzIkGOS8PMRXNQuv-HZcWD4B31OBAkJcyT-X6ooLxordQULPNs8DmwVjPPMVovz_jq8UM1Ix9H_3TqXoyZyJv2hBF2xnXXr-j_W6ytggttl8Om8bF59EWWKAFY2vfFmxutH8klppmF")'>
+        </div>
+        <div class="flex flex-col gap-1">
+          <div
+            class="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 px-4 py-2.5 rounded-2xl rounded-bl-none shadow-sm">
+            <p class="text-sm leading-relaxed">Sure thing, check this out. Let me know what you think about the dark
+              mode palette.</p>
+            <div
+              class="mt-3 flex items-center gap-3 bg-white dark:bg-slate-900 p-2 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+              <div class="size-10 flex items-center justify-center bg-red-100 dark:bg-red-900/30 rounded-lg">
+                <span class="material-symbols-outlined text-red-600">picture_as_pdf</span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-semibold truncate">Design_Specs_v2.pdf</p>
+                <p class="text-[10px] text-slate-400 uppercase font-bold">4.2 MB • PDF</p>
+              </div>
+              <span class="material-symbols-outlined text-slate-400">download</span>
+            </div>
+          </div>
+          <span class="text-[10px] text-slate-400 ml-1">10:27 AM</span>
+        </div>
+      </div>
+      <!-- Sent Message -->
+      <div class="flex flex-col items-end gap-1 ml-auto max-w-[85%]">
+        <div class="bg-primary text-white px-4 py-2.5 rounded-2xl rounded-br-none shadow-sm shadow-primary/20">
+          <p class="text-sm leading-relaxed">Got it! Opening it now. The palette looks really clean from the preview.
+          </p>
+        </div>
+        <div class="flex items-center gap-1 mr-1">
+          <span class="text-[10px] text-slate-400">10:28 AM</span>
+          <span class="material-symbols-outlined text-primary text-[14px]">done_all</span>
+        </div>
+      </div>
+      <!-- Typing Indicator -->
+      <div class="flex items-center gap-2">
+        <div class="size-8 shrink-0 rounded-full bg-cover bg-center" data-alt="Small profile avatar of Alex Johnson"
+          style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBJY2pI4-dN0BGJal3WrnEGb8rnUarQmAVab3yHzxPhSIyyYpUebCB1lZ_yOdN8I8yfq0ASQwY67gztHsPSqAUm8WyKGmma88S6e35g52XB38tiTNTBKSIqT9Mo41AZ9r6ldqZsohuVH6Ljf3NvJpEdrdtPWKZgpaBrxEDVPk1kE33RWDuJlLxbGwI2U0Bx69tWxKGf60rPLR-Y72Z7YfOt6PhDtmKnMMEWqa-JNBdMfhc7tdpd96R6KZutxnJbl0SjFLAfVSImifZY")'>
+        </div>
+        <div class="bg-slate-100 dark:bg-slate-800 px-3 py-2 rounded-2xl flex gap-1">
+          <div class="size-1.5 bg-slate-400 dark:bg-slate-500 rounded-full animate-bounce"></div>
+          <div class="size-1.5 bg-slate-400 dark:bg-slate-500 rounded-full animate-bounce [animation-delay:-0.15s]">
+          </div>
+          <div class="size-1.5 bg-slate-400 dark:bg-slate-500 rounded-full animate-bounce [animation-delay:-0.3s]">
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- Input Bar -->
+    <footer class="p-4 bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
+      <div class="flex gap-2 items-center">
+        <div
+          class="flex-1 flex items-center bg-slate-100 dark:bg-slate-900 rounded-2xl px-3 py-1.5 gap-2 border border-transparent focus-within:border-primary/30 transition-all">
+          <button class="p-1 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors">
+            <span class="material-symbols-outlined">sentiment_satisfied</span>
+          </button>
+          <textarea
+            class="flex-1 bg-transparent border-none focus:ring-0 text-sm py-2 resize-none max-h-32 text-slate-900 dark:text-slate-100 placeholder-slate-500"
+            placeholder="Type a message..." rows="1"></textarea>
+        </div>
+        <button
+          class="flex size-11 items-center justify-center bg-primary text-white rounded-full shadow-lg shadow-primary/25 hover:brightness-110 active:scale-95 transition-all">
+          <span class="material-symbols-outlined">send</span>
+        </button>
+      </div>
+      <!-- Safe area bottom spacer for mobile -->
+      <div class="h-2"></div>
+    </footer>
+  </div>
+</body>
+
+</html>

@@ -5,12 +5,13 @@ AI-powered chat interface for Tally Prime accounting data. Business owners ask n
 
 ## 🏗 Tech Stack
 
-### Monorepo
-- pnpm workspaces (pnpm@10.15.0)
+### Project Structure
+- Two independent apps: `backend/` and `frontend/` — each has its own `node_modules`, no workspace linking
 - Node.js >= 22.0.0
 - TypeScript 5.5
+- To add a new stack (e.g. Python): just create a new top-level directory (e.g. `backend-python/`)
 
-### Backend (`packages/backend`)
+### Backend (`backend/`)
 - Fastify v4 — HTTP server
 - @fastify/cors — CORS middleware
 - Kysely — type-safe SQL query builder
@@ -22,10 +23,11 @@ AI-powered chat interface for Tally Prime accounting data. Business owners ask n
 - tsx — TypeScript execution (dev)
 - Vitest — unit testing
 
-### Frontend (`packages/frontend`)
+### Frontend (`frontend/`)
 - SolidJS v1.8 — reactive UI framework
 - Vite v5 — build tool and dev server
 - vite-plugin-solid — SolidJS Vite integration
+- Tailwind CSS v4 (`@tailwindcss/vite`) — utility-first CSS framework
 - TypeScript 5.5
 - Vitest — unit testing
 
@@ -33,7 +35,8 @@ AI-powered chat interface for Tally Prime accounting data. Business owners ask n
 - PostgreSQL — primary data store (Tally Prime accounting data)
 
 ### LLM
-- Qwen 3.5 — local LLM (OpenAI-compatible API)
+- Qwen2.5-Coder-7B-Instruct — local LLM via LM Studio (OpenAI-compatible API, 95.73% SQL accuracy, 80+ languages including Hindi)
+- LM Studio context length must be set to **8192** to handle full system prompt + SQL output
 
 ## 📋 Coding Rules
 
@@ -118,11 +121,10 @@ AI-powered chat interface for Tally Prime accounting data. Business owners ask n
 - Use `vi.mock` only for external services (LLM, DB in unit tests) — prefer real DB in integration tests
 - Test file naming: `*.test.ts` co-located with the source file
 
-### Monorepo / pnpm
-- Always run commands from the workspace root using `pnpm --filter @tally-chat/backend <cmd>`
+### pnpm
+- Always run commands from inside the app directory: `cd backend && pnpm <cmd>` or `cd frontend && pnpm <cmd>`
 - Never install a package with `npm` or `yarn` — always `pnpm`
-- Shared types between packages go in a `packages/shared` package (when needed)
-- Keep `pnpm-lock.yaml` committed — never `.gitignore` it
+- Each app has its own `pnpm-lock.yaml` — keep both committed
 
 ## 🚫 Never Do This (Universal)
 - Never hardcode credentials
@@ -136,8 +138,17 @@ AI-powered chat interface for Tally Prime accounting data. Business owners ask n
 
 ## ✅ Current Status
 - Started: 2026-03-14
-- In progress: Initial setup
-- Next up: [Add your first task here]
+- **Working end-to-end**: Backend chat pipeline + Frontend UI are both functional
+- Full pipeline: User question → LLM (Qwen2.5-Coder via LM Studio) → SQL validator → PostgreSQL → formatted answer
+- Hindi + English queries supported
+- Migrated from pnpm monorepo to two independent apps (`backend/`, `frontend/`)
+- Frontend redesigned to match `error/design.html` reference: Inter font, #135bec primary blue, white chat panel, avatar bubbles, timestamps, typing indicator
+- Tailwind CSS v4 `@theme` token (`--color-primary`) confirmed working; base styles in `@layer base` to survive preflight
+- Next up: Error display in UI, SQL preview toggle
 
 ## 🔄 Session History (Last 5 Only)
-- 2026-03-14: Project initialized with Claude Code setup
+- 2026-03-15: Backend fixes — timing logs (LLM+DB), Hindi query fix (language rule + few-shot), model switched to qwen2.5-coder-7b-instruct, SQL truncation diagnosed (LM Studio context → 8192), model comparison doc saved to plan/
+- 2026-03-15: Frontend UI modernization — Tailwind CSS v4, Roboto font, light slate-50 theme, indigo-600 header, color-coded message bubbles, slide-in animations, animated dot loader
+- 2026-03-15: Migrated from pnpm workspace monorepo to two independent apps (backend/, frontend/) — fixes Tailwind v4 module graph scanning regression in workspaces
+- 2026-03-16: Frontend redesign — matched error/design.html: Inter font, #135bec primary, white panel max-w-2xl, avatar+online dot header, received/sent bubble layout, timestamps, double-check icon, typing indicator, pill input bar, round send button; added timestamp field to Message interface
+- 2026-03-16: Tailwind CSS fixes — removed inline style override in index.html, moved base styles into @layer base in index.css, replaced size-* with w-*/h-* for cross-element compatibility
