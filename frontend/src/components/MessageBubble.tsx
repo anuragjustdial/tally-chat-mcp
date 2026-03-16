@@ -1,5 +1,8 @@
 import { Component, Show } from 'solid-js'
+import { marked } from 'marked'
 import type { Message } from '../api/chat.js'
+
+marked.use({ breaks: true })
 
 interface Props {
   message: Message
@@ -29,7 +32,7 @@ export const MessageBubble: Component<Props> = (props) => {
                   </span>
                 }
               >
-                <p class="text-sm leading-relaxed whitespace-pre-wrap">{props.message.content}</p>
+                <div class="prose" innerHTML={marked.parse(props.message.content) as string} />
               </Show>
             </div>
             <Show when={props.message.timestamp && !props.isLoading}>

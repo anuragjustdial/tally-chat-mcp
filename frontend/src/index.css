@@ -58,3 +58,125 @@
 .chat-scroll::-webkit-scrollbar { width: 4px; }
 .chat-scroll::-webkit-scrollbar-track { background: transparent; }
 .chat-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+
+/* ── Markdown prose (scoped to assistant bubbles only) ── */
+
+.prose {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #1e293b;
+  word-break: break-word;
+}
+
+.prose p {
+  margin: 0;
+}
+
+.prose p + p {
+  margin-top: 0.5rem;
+}
+
+.prose strong {
+  font-weight: 600;
+}
+
+.prose em {
+  font-style: italic;
+}
+
+.prose a {
+  color: #135bec;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.25rem;
+  margin: 0.375rem 0;
+}
+
+.prose ul {
+  list-style-type: disc;
+}
+
+.prose ol {
+  list-style-type: decimal;
+}
+
+.prose li {
+  margin-bottom: 0.2rem;
+}
+
+.prose li + li {
+  margin-top: 0.1rem;
+}
+
+.prose code {
+  background-color: #e2e8f0;
+  border-radius: 4px;
+  padding: 0.1rem 0.35rem;
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+  font-size: 0.8125rem;
+}
+
+.prose pre {
+  background-color: #1e293b;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  overflow-x: auto;
+  margin: 0.5rem 0;
+}
+
+.prose pre code {
+  background: none;
+  padding: 0;
+  font-size: 0.8rem;
+  color: inherit;
+}
+
+/* Table */
+.prose table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.5rem 0;
+  font-size: 0.8125rem;
+}
+
+.prose th {
+  background-color: #cbd5e1;
+  font-weight: 600;
+  text-align: left;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid #94a3b8;
+}
+
+.prose td {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid #cbd5e1;
+  text-align: left;
+}
+
+.prose tr:nth-child(even) td {
+  background-color: #f1f5f9;
+}
+
+.prose tr:hover td {
+  background-color: #e2e8f0;
+  transition: background-color 0.15s ease;
+}
+
+.prose blockquote {
+  border-left: 3px solid #94a3b8;
+  padding-left: 0.75rem;
+  margin: 0.5rem 0;
+  color: #64748b;
+  font-style: italic;
+}
+
+.prose hr {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 0.5rem 0;
+}
