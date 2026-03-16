@@ -15,9 +15,7 @@ export const MessageBubble: Component<Props> = (props) => {
       fallback={
         /* Assistant (received) — left-aligned with avatar */
         <div class="flex items-end gap-2 max-w-[85%]">
-          <div class="w-8 h-8 shrink-0 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-sm mb-1">
-            🤖
-          </div>
+          <img src="/icons/bot.png" alt="Tally Chat" class="w-8 h-8 shrink-0 rounded-full object-cover mb-1" />
           <div class="flex flex-col gap-1">
             <div class="bg-slate-100 text-slate-900 px-4 py-2.5 rounded-2xl rounded-bl-none shadow-sm">
               <Show
