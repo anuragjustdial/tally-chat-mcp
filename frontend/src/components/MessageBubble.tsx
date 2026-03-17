@@ -1,8 +1,13 @@
 import { Component, Show } from 'solid-js'
-import { marked } from 'marked'
+import { marked, type Tokens } from 'marked'
 import type { Message } from '../api/chat.js'
 
 marked.use({ breaks: true })
+
+const wrapTables = (html: string): string =>
+  html
+    .replace(/<table/g, '<div class="table-wrap"><table')
+    .replace(/<\/table>/g, '</table></div>')
 
 interface Props {
   message: Message
@@ -17,10 +22,10 @@ export const MessageBubble: Component<Props> = (props) => {
       when={isUser()}
       fallback={
         /* Assistant (received) — left-aligned with avatar */
-        <div class="flex items-end gap-2 max-w-[85%]">
+        <div class="flex items-end gap-2 max-w-[85%] min-w-0">
           <img src="/icons/bot.png" alt="Tally Chat" class="w-8 h-8 shrink-0 rounded-full object-cover mb-1" />
-          <div class="flex flex-col gap-1">
-            <div class="bg-slate-100 text-slate-900 px-4 py-2.5 rounded-2xl rounded-bl-none shadow-sm">
+          <div class="flex flex-col gap-1 min-w-0">
+            <div class="bg-slate-100 text-slate-900 px-4 py-2.5 rounded-2xl rounded-bl-none shadow-sm overflow-hidden">
               <Show
                 when={!props.isLoading}
                 fallback={
@@ -32,7 +37,7 @@ export const MessageBubble: Component<Props> = (props) => {
                   </span>
                 }
               >
-                <div class="prose" innerHTML={marked.parse(props.message.content) as string} />
+                <div class="prose" innerHTML={wrapTables(marked.parse(props.message.content) as string)} />
               </Show>
             </div>
             <Show when={props.message.timestamp && !props.isLoading}>

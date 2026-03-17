@@ -136,12 +136,24 @@
   color: inherit;
 }
 
+/* Table scroll wrapper — injected by MessageBubble around every <table> */
+.prose .table-wrap {
+  overflow-x: auto;
+  width: 100%;
+  margin: 0.5rem 0;
+}
+
+.prose .table-wrap::-webkit-scrollbar { height: 4px; }
+.prose .table-wrap::-webkit-scrollbar-track { background: transparent; }
+.prose .table-wrap::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+
 /* Table */
 .prose table {
   border-collapse: collapse;
-  width: 100%;
-  margin: 0.5rem 0;
+  white-space: nowrap;
+  width: auto;
   font-size: 0.8125rem;
+  margin: 0;
 }
 
 .prose th {
@@ -180,3 +192,4 @@
   border-top: 1px solid #e2e8f0;
   margin: 0.5rem 0;
 }
+
