@@ -75,6 +75,16 @@
 - **Enhancement**: First column is sticky (`position: sticky; left: 0`) so users always see the row label while scrolling wide tables. Uses `border-collapse: separate; border-spacing: 0` (required for sticky to work) with explicit `background-color` and `box-shadow` on `th/td:first-child` to maintain visual separation.
 
 ---
+## [FEATURE-011] Remove Dead Backend Code
+- **Status**: ✅ Complete
+- **Date**: 2026-03-16
+- **Files deleted (src)**: `backend/src/llm/client.ts`, `backend/src/llm/schema-loader.ts`, `backend/src/llm/sql-generator.ts`, `backend/src/sql-safety/validator.ts`, `backend/src/db/kysely.ts`, `backend/src/db/dialect.ts`
+- **Files deleted (tests)**: `backend/tests/llm/sql-generator.test.ts`, `backend/tests/llm/schema-loader.test.ts`, `backend/tests/db/kysely.test.ts`, `backend/tests/sql-safety/validator.test.ts`
+- **Files updated**: `backend/tests/routes/chat.test.ts` (rewritten to mock `fetch` and test all 5 `PythonServiceResponse` status cases + network/HTTP errors), `backend/tests/formatters/result.test.ts` (replaced `formatRows` tests with `formatPythonResponse` tests)
+- **How it works**: The Node.js backend was migrated to delegate all LLM + SQL work to a Python service. The old pipeline (OpenAI SDK → Kysely → node-sql-parser) was never called by the live `routes/chat.ts` but its files remained, adding maintenance burden. All 6 source files and 4 test files for the dead pipeline were removed. Test coverage was updated to reflect the current delegation architecture: `routes/chat.ts` calls `PYTHON_SERVICE_URL/query` via `fetch` and handles five response statuses (`success`, `non_sql`, `max_retries`, `api_error`, network failure, HTTP error).
+- **Known issues**: None
+
+---
 ## [FEATURE-009] Tailwind CSS v4 Runtime Fixes
 - **Status**: ✅ Complete
 - **Date**: 2026-03-16

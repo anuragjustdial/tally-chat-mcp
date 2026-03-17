@@ -17,17 +17,8 @@ tally-chat-mcp/
 │   │   ├── index.ts                # Entry point — starts the server
 │   │   ├── routes/
 │   │   │   └── chat.ts             # processChatMessage() — core request handler
-│   │   ├── llm/
-│   │   │   ├── client.ts           # OpenAI SDK client pointed at LM Studio
-│   │   │   ├── schema-loader.ts    # buildSystemPrompt() — DB schema + rules, in-memory cache
-│   │   │   └── sql-generator.ts    # Calls LLM, returns raw SQL string
-│   │   ├── sql-safety/
-│   │   │   └── validator.ts        # validateSql() — AST + regex allowlist (SELECT-only, 41 tables)
-│   │   ├── formatters/
-│   │   │   └── result.ts           # formatPythonResponse() — columns+rows → markdown table
-│   │   └── db/
-│   │       ├── kysely.ts           # Kysely instance + rawQuery() helper
-│   │       └── dialect.ts          # pg dialect configuration
+│   │   └── formatters/
+│   │       └── result.ts           # formatPythonResponse() — columns+rows → markdown table
 │   ├── tests/                      # Vitest unit + integration tests
 │   ├── package.json
 │   └── tsconfig.json
@@ -139,26 +130,13 @@ processChatMessage(message)
   4. Return ChatResult to server.ts → HTTP 200
 ```
 
-### SQL Validation (`sql-safety/validator.ts`)
+### SQL Validation
 
-All LLM-generated SQL passes through a two-stage validator before execution:
+SQL validation (SELECT-only, 41-table allowlist, AST inspection) is handled entirely inside the Python service before any database call is made. The Node backend does not perform SQL validation.
 
-1. **Fast-fail checks** — rejects if: contains `;` (multi-statement), matches `INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|TRUNCATE|GRANT|REVOKE|EXEC`, or does not start with `SELECT` or `WITH`
-2. **AST validation** — `node-sql-parser` parses into AST, confirms `type === 'select'`, checks all referenced tables against the 41-table allowlist
-3. **Regex fallback** — if the AST parser fails on valid PostgreSQL (CTEs, complex subqueries), falls back to regex-based `FROM`/`JOIN` table extraction against the same allowlist
+### System Prompt and Schema Loading
 
-### System Prompt Cache (`llm/schema-loader.ts`)
-
-`buildSystemPrompt()` queries `information_schema.columns` on first call, builds a prompt containing:
-- Role definition and output rules (SQL-only, no explanations)
-- Indian fiscal year and date calculation rules
-- Amount sign conventions for `trn_accounting`
-- Mandatory voucher filters (exclude order/inventory vouchers)
-- Key table relationships and semantic mappings
-- Few-shot SQL examples (English + Hindi)
-- Live DB schema (all tables and columns)
-
-The result is cached in-memory as `cachedPrompt`. Call `invalidateSchemaCache()` to rebuild after a schema change.
+The system prompt (role definition, date rules, few-shot SQL examples, live DB schema) is built and cached by the Python service. The Node backend has no knowledge of the schema or LLM prompt.
 
 ### Result Formatter (`formatters/result.ts`)
 
@@ -295,5 +273,4 @@ Notable decisions embedded in the architecture:
 - **Two independent apps** (`backend/`, `frontend/`) with separate `node_modules` — avoids pnpm workspace monorepo issues with Tailwind v4 module graph scanning
 - **Python service as intermediary** — LLM-to-SQL pipeline and DB execution are delegated to a Python service; the Node backend is a thin proxy + formatter
 - **In-memory prompt cache** — DB schema is loaded once at startup and cached; `invalidateSchemaCache()` exists for manual invalidation after schema changes
-- **SQL validation is defence-in-depth** — Python service validates too, but the Node backend's `validateSql()` provides an independent second layer before any DB call would occur
 - **`marked` + `wrapTables()`** — markdown tables from the LLM are rendered client-side via `marked`; the `wrapTables()` string transform injects scroll wrappers post-parse rather than customising the marked renderer, keeping the rendering pipeline simple
