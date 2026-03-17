@@ -66,6 +66,15 @@
 - **Known issues**: None
 
 ---
+## [FEATURE-010] Table Horizontal Scroll
+- **Status**: ✅ Complete
+- **Date**: 2026-03-16
+- **Files**: `frontend/src/components/MessageBubble.tsx`, `frontend/src/index.css`
+- **How it works**: Three-part solution. (1) `wrapTables()` helper in `MessageBubble.tsx` wraps every `<table>` in `<div class="table-wrap">` before injecting via `innerHTML`. (2) `.prose .table-wrap` in `index.css` is the scroll container (`overflow-x: auto; width: 100%`). (3) The assistant bubble's outer flex wrapper gets `min-w-0` (allows flex item to shrink below content size) and the bubble div gets `overflow-hidden` (creates the hard width boundary that `overflow-x: auto` needs to work). Without `min-w-0` + `overflow-hidden`, `max-w-[85%]` is overridden by the table's intrinsic width in flex layout, causing the whole page to scroll. The table itself has `white-space: nowrap; width: auto` so columns render at natural width. Only the table scrolls — chat panel, other bubbles, user messages are unaffected.
+- **Known issues**: `white-space: nowrap` means very long cell text (e.g. narration fields) will make that column wide rather than wrapping — acceptable for accounting data.
+- **Enhancement**: First column is sticky (`position: sticky; left: 0`) so users always see the row label while scrolling wide tables. Uses `border-collapse: separate; border-spacing: 0` (required for sticky to work) with explicit `background-color` and `box-shadow` on `th/td:first-child` to maintain visual separation.
+
+---
 ## [FEATURE-009] Tailwind CSS v4 Runtime Fixes
 - **Status**: ✅ Complete
 - **Date**: 2026-03-16
